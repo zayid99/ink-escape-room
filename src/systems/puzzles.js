@@ -4,8 +4,10 @@
 // Kinds implemented:
 //   'code'  — combination lock (see ui/codeLock.js)
 //   'steps' — multi-step / observation puzzle tracked by named steps (content drives the UI)
+//   'order' — put cards in the right sequence (see ui/orderPuzzle.js)
 
 import { CodeLock } from '../ui/codeLock.js';
+import { OrderPuzzle } from '../ui/orderPuzzle.js';
 
 export class Puzzles {
   constructor(game, defs) {
@@ -58,7 +60,8 @@ export class Puzzles {
 
   /**
    * Open a combination lock. Resolves true when solved.
-   * def: { digits, solution, title, tag, brand, check?(code, game) => {ok,message,red} }
+   * def: { digits, solution: string | (code, game) => boolean, title, tag: string | (game) => string,
+   *        brand, onWrong?(code, game) => { message, red, redId } }
    */
   openCodeLock(id) {
     const def = this.defs[id];
@@ -70,14 +73,17 @@ export class Puzzles {
       {
         title: def.title,
         digits: def.digits,
-        tag: def.tag,
+        tag: typeof def.tag === 'function' ? def.tag(g) : def.tag,
         brand: def.brand,
+        variant: def.variant,
+        tryLabel: def.tryLabel,
         initial: this.state.flags[`${id}.last`] || '',
         redNotes: (def.redNotes || []).filter((n) => this.state.flags[`${id}.red.${n.id}`]).map((n) => n.text),
         onSubmit: async (code) => {
           this.state.flags[`${id}.last`] = code;
           this.state.flags[attemptsKey] = (this.state.flags[attemptsKey] || 0) + 1;
-          if (code === def.solution) {
+          const right = typeof def.solution === 'function' ? def.solution(code, g) : code === def.solution;
+          if (right) {
             g.audio.play('unlock');
             this.markSolved(id);
             return { ok: true, message: def.solvedText };
@@ -91,5 +97,38 @@ export class Puzzles {
       { audio: g.audio },
     );
     return g.ui.open(lock);
+  }
+
+  // ---- 'order' puzzles ----
+
+  /**
+   * def: { title, intro, cards: {id,label,detail}[], solution: string[], slotLabels?,
+   *        onWrong?(order, game) => { message, red } }
+   */
+  openOrder(id) {
+    const def = this.defs[id];
+    if (!def || def.kind !== 'order') throw new Error(`[puzzles] "${id}" is not an order puzzle`);
+    const g = this.game;
+    const puzzle = new OrderPuzzle(
+      g.ui,
+      {
+        title: def.title,
+        intro: typeof def.intro === 'function' ? def.intro(g) : def.intro,
+        cards: def.cards,
+        slotLabels: def.slotLabels,
+        initial: this.state.flags[`${id}.last`] || null,
+        onSubmit: async (order) => {
+          this.state.flags[`${id}.last`] = order;
+          if (order.join('|') === def.solution.join('|')) {
+            this.markSolved(id);
+            return { ok: true, message: def.solvedText };
+          }
+          g.changed();
+          return { ok: false, ...(def.onWrong?.(order, g) || {}) };
+        },
+      },
+      { audio: g.audio },
+    );
+    return g.ui.open(puzzle);
   }
 }

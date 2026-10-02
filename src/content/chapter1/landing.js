@@ -2,7 +2,7 @@
 // padlock (Puzzle 2, "The True Minute") and the first sighting of the tall man.
 
 import { INK, PAPER_LIGHT, FONT_TYPE } from '../../render/ink.js';
-import { FLOOR, floorboards, wallpaper, skirting, windowFrame, windowNight, doorClosed, doorOpen, clockFace } from './draw.js';
+import { FLOOR, floorboards, wallpaper, skirting, windowFrame, windowNight, doorClosed, doorOpen, clockFace } from '../draw.js';
 
 const W = 1040;
 const WIN = { x: 140, y: 80, w: 70, h: 100 };

@@ -47,7 +47,7 @@ export class MainMenu extends Modal {
         el('h1', { class: 'menu-title', text: 'Marginalia' }),
         el('p', { class: 'menu-tag red-pen', text: 'Don’t trust the clocks. Don’t trust me either.' }),
         list,
-        el('p', { class: 'menu-foot', text: 'Chapter One of Four · Progress saves automatically' }),
+        el('p', { class: 'menu-foot', text: 'Four chapters · Progress saves automatically' }),
       ]),
     );
   }

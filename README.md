@@ -13,12 +13,16 @@ The whole world is that journal: shaky ink lines that never sit still, cross-hat
 
 ## Status
 
-| Chapter | State |
-|---|---|
-| 1 — *The Margin* (attic study, landing, nursery · 3 puzzles · Twist 1) | **Playable start to finish** |
-| 2 — *Lark Time* · 3 — *Exposure* · 4 — *Low Water* | Written in `STORY.md`; not built yet |
+**The whole game is playable start to finish** — four chapters, 11 rooms, 12 main puzzles, two endings and a game over. Allow roughly 1–2 hours.
 
-The engine already supports what later chapters need: multiple rooms, code locks, multi-step puzzles, item use and combination, documents, journal pages, red-pen world annotations, the tall man, game-over and ending screens, and save/load.
+| Chapter | Rooms | Puzzles | Ends on |
+|---|---|---|---|
+| 1 — *The Margin* | attic study, landing, nursery | the locked door · Father’s padlock (“the true minute”) · the nursery from memory | Twist 1 |
+| 2 — *Lark Time* | kitchen, hall, workshop | the snapped answerphone tape · the regulator (set it to *true* time — the clocks keep running) · the mirror and the window | Twist 2 |
+| 3 — *Exposure* | glasshouse, darkroom, cellar | Abel’s CO alarm (then follow its readings) · developing the film in the dark · shutting the boiler down | Twist 3 |
+| 4 — *Low Water* | back stair, nursery, hall, causeway | the night of the fire, by true time · the last page · crossing at low water | The ending |
+
+Endings: **Wren** (the true ending), **Night Five** (a loop ending — you can turn back the page), and the **High Water** game over.
 
 ## Tech stack
 
@@ -130,12 +134,17 @@ src/
     paper.js              procedural aged paper
     renderer.js           static layer per boil tick, ink-wash lighting, prompts
   world/                  player rig, interaction/hotspots, red-pen annotations, the tall man
-  systems/                inventory, puzzles (code locks, multi-step), story (flags/clues/journal/objectives), audio
-  ui/                     menus, pause, settings, dialogue, document viewer, code lock, inventory, journal, HUD, story cards
+  systems/                inventory, puzzles (code locks, ordering, multi-step), story (flags/clues/journal/objectives), audio
+  ui/                     menus, pause, settings, dialogue, document viewer, code lock, ordering puzzle, choices,
+                          inventory, journal, HUD (objective, held item, CO meter), story cards
   content/
     index.js              registry of rooms, items, clues, journal pages, documents, puzzles, chapters
     items.js · clues.js · journal.js · documents.js · sketches.js · assets.manifest.js
-    chapter1/             study.js, landing.js, nursery.js, shared drawing helpers, chapter script
+    draw.js · time.js     shared ink drawing helpers · house clocks, Lark time and the tide
+    chapter1/             study.js, landing.js, nursery.js, chapter script
+    chapter2/             kitchen.js, hall.js, workshop.js, data.js (items/clues/docs/journal), chapter script
+    chapter3/             greenhouse.js, darkroom.js, cellar.js, data.js, chapter script
+    chapter4/             backstair.js, causeway.js, data.js, chapter script (finale, endings)
 ```
 
 ### How the hand-drawn look works
@@ -145,12 +154,12 @@ The `Pen` (`src/render/ink.js`) draws every line with a little jitter from a see
 ### Adding a room or chapter
 
 1. Create a room module like `src/content/chapter1/study.js`: `width`, `bounds`, `lights()`, `drawStatic()`, optional `drawDynamic()`/`drawLit()`, `hotspots[]` with `onInteract(g)` / `onUse(g, itemId)`, `onEnter(g, from)`.
-2. Register rooms, puzzles and the chapter script (`begin`, `resume`, `end`) in `src/content/index.js`.
+2. Register rooms, puzzles and the chapter script (`begin`, `resume`, `end`, optional `hooks` and `onRoomEnter`) in `src/content/index.js`. `g.startChapter(n)` begins a chapter and stores the checkpoint that **Restart chapter** returns to.
 3. Add any new items, clues, documents or journal pages to their registries.
 
 ## Save system
 
-Progress autosaves to localStorage shortly after anything changes (never in the middle of a scripted moment), on every room change, and when the tab is hidden or closed. **Pause → Save game** saves on demand; **Continue** on the main menu and **Pause → Load last save** restore it. Saved: chapter, room and position, inventory, puzzle state, story flags, clues, journal pages, red-pen annotations, haze and play time. Saves are versioned and validated; a corrupt or incompatible save is ignored rather than crashing. If storage is unavailable (private mode, blocked site data) the game still runs, it just can’t remember.
+Progress autosaves to localStorage shortly after anything changes (except on the causeway, so a doomed crossing never becomes your save) (never in the middle of a scripted moment), on every room change, and when the tab is hidden or closed. **Pause → Save game** saves on demand; **Continue** on the main menu and **Pause → Load last save** restore it. Saved: chapter, room and position, inventory, puzzle state, story flags, clues, journal pages, red-pen annotations, haze and play time. Saves are versioned and validated; a corrupt or incompatible save is ignored rather than crashing. If storage is unavailable (private mode, blocked site data) the game still runs, it just can’t remember.
 
 ## Browser support
 
@@ -158,4 +167,30 @@ Current Chrome, Edge, Firefox and Safari (desktop and mobile). Needs Canvas 2D a
 
 ## Testing
 
-Chapter 1 was play-tested end to end in headless Chromium (Playwright): every hotspot, all three puzzles including wrong answers, item use/combination, the tall-man sighting, the twist, the chapter-end screen, journal/inventory/pause/settings, a save → reload → Continue round trip, and phone-sized viewports — with no console errors.
+The whole game was play-tested end to end in headless Chromium (Playwright), all four chapters in one run: every puzzle including wrong answers (wrong padlock code, the regulator set to house time, chemicals and boiler steps in the wrong order, the fire timeline in Lark time), item use and combination, both tall-man sightings, all three twists, **Restart chapter** mid-game (items from earlier chapters survive), the loop ending and “Turn back the page”, the **High Water** game over and **Load last save**, and the true ending — with no console errors. Chapter 1 also has keyboard/mouse-only and phone-viewport runs, and a save → reload → Continue round trip.
+
+## Stuck? (spoilers)
+
+<details>
+<summary>Chapter 1</summary>
+
+Take the journal from the desk. Tide table (wall by the window) under the door first, then the hairpin (suitcase) through the keyhole. On the landing, Father’s ledger says the clocks run 40 minutes fast: the longcase shows 3:17, so the padlock is **0237**. In the nursery, compare the room with your drawing: the bed labels, the curtains, and — after looking at the dollhouse — the wardrobe. Then push it.
+</details>
+
+<details>
+<summary>Chapter 2</summary>
+
+Take the snapped cassette from the answerphone, sticky tape from the dresser drawer, **Combine** them, hold the mended tape and use it on the answerphone. Then search the bread crock for Father’s keys. The regulator’s pendulum is propping the hall cupboard door. Hang it, then set the regulator to the kitchen clock’s time **minus 40 minutes**. After reading Mother’s diary, stand at the hall window with your back to the mirror; when he appears in the glass, look out of the window.
+</details>
+
+<details>
+<summary>Chapter 3</summary>
+
+Mother’s keys open the glasshouse (kitchen) and the darkroom (hall). Use the battery from the attic desk drawer on the alarm in the glasshouse. In the darkroom: pull the safelight, turn the torch off (**F**), then pour brown bottle → vinegar → hypo crystals → water. The paper safe (torch off) holds the cellar key. In the cellar, open the coal chute for air, find the cracked flue joint with the alarm, read the brass tag, then shut down: gas → check pilot → pump → air.
+</details>
+
+<details>
+<summary>Chapter 4</summary>
+
+Kitchen → back stair. True times: flue 2:20 → cellar-door clock (3:02 → 2:22) → Abel runs (2:25) → half-landing (3:09 → 2:29) → curtain (3:17 → 2:37). In the nursery, sign the page. Out via the back stair, kitchen and hall; the front-door code is Wren’s birthday, **1403**. Low water is 7:49 true time, safe from 5:49 — the house clocks will say **6:29**. Wait until then (or watch the causeway rise out of the sea through the window).
+</details>

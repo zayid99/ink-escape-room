@@ -1,8 +1,8 @@
 // Shared ink drawing helpers for the Wexley House rooms. Coordinates are logical:
 // the back wall meets the floor at y = 256; the player walks at y ≈ 304.
 
-import { INK, RED, PAPER_LIGHT, FONT_TYPE } from '../../render/ink.js';
-import { mulberry32 } from '../../core/math.js';
+import { INK, RED, PAPER_LIGHT, FONT_TYPE } from '../render/ink.js';
+import { mulberry32 } from '../core/math.js';
 
 export const FLOOR = 256;
 
@@ -150,5 +150,76 @@ export function flame(pen, x, y, power, t) {
     c.quadraticCurveTo(x + 4 + pen.J(0.8), y - fh * 0.45, x + sway + pen.J(0.6), y - fh);
     c.quadraticCurveTo(x - 4 + pen.J(0.8), y - fh * 0.45, x + pen.J(0.4), y);
     c.stroke();
+  }
+}
+
+/**
+ * The sea and causeway through a window, at night or dawn. `exposure` 0..1 is how
+ * much of the causeway stands clear of the water (driven by TRUE time), so a player who
+ * looks outside can see whether it is really safe — whatever the clocks say.
+ */
+export function windowSea(pen, x, y, w, h, t, { dawn = 0, exposure = 0, lantern = 0, lanternX = 0.55, salt = 'sea' } = {}) {
+  const c = pen.ctx;
+  c.save();
+  c.beginPath();
+  c.rect(x, y, w, h);
+  c.clip();
+  pen.begin(`${salt}-sky`);
+  pen.fillRect(x, y, w, h, `rgba(40,34,40,${0.55 * (1 - dawn * 0.8)})`);
+  if (dawn < 0.9) pen.hatch(x, y, w, h, { gap: 2.6 + dawn * 4, dir: 1, w: 0.5, alpha: 0.75 * (1 - dawn) });
+  const sea = y + h * 0.6;
+  // Swell lines.
+  for (let i = 0; i < 4; i++) {
+    const yy = sea + 6 + i * ((h * 0.4) / 4) + Math.sin(t * 0.8 + i) * 1.2;
+    pen.line(x, yy, x + w, yy + 1, { w: 0.6, col: dawn > 0.5 ? INK : PAPER_LIGHT, alpha: 0.45, passes: 1 });
+  }
+  pen.line(x, sea, x + w, sea - 2, { w: 0.9, col: dawn > 0.5 ? INK : PAPER_LIGHT, alpha: 0.7 });
+  // The causeway: a line of stones, drowned or standing clear.
+  const sx = x + w * 0.08;
+  const ex = x + w * 0.92;
+  const n = 9;
+  for (let i = 0; i < n; i++) {
+    const px = sx + ((ex - sx) * i) / (n - 1);
+    const py = y + h - 6 - ((y + h - 6 - (sea + 4)) * i) / (n - 1);
+    const s = 1 - i / n;
+    const covered = exposure < 1 && i / n > exposure;
+    if (covered) pen.line(px - 3 * s, py, px + 3 * s, py, { w: 0.6, col: dawn > 0.5 ? INK : PAPER_LIGHT, alpha: 0.35, passes: 1 });
+    else {
+      pen.fillRect(px - 3 * s, py - 2.5 * s, 6 * s, 3 * s, dawn > 0.5 ? INK : PAPER_LIGHT, 0.8);
+    }
+  }
+  if (lantern > 0) {
+    const lx = x + w * (lanternX + 0.02 * Math.sin(t * 0.2));
+    const ly = sea + 3 + Math.sin(t * 2.1) * 0.6;
+    pen.fillEllipse(lx, ly, 3.2, 3.2, `rgba(242,235,217,${0.9 * lantern})`);
+    pen.ellipse(lx, ly, 6, 6, { col: RED, w: 0.8, alpha: 0.6 * lantern });
+  }
+  if (dawn < 0.6) {
+    const R = mulberry32(Math.floor(t * 10) * 13 + 11);
+    c.strokeStyle = 'rgba(242,235,217,0.4)';
+    c.lineWidth = 0.6;
+    c.beginPath();
+    for (let i = 0; i < 20; i++) {
+      const rx = x + ((i * 37 + t * 160 + R() * 6) % (w + 30)) - 15;
+      const ry = y + ((i * 53 + t * 420) % (h + 30)) - 15;
+      c.moveTo(rx, ry);
+      c.lineTo(rx - 3, ry + 9);
+    }
+    c.stroke();
+  }
+  c.restore();
+}
+
+/** A shelf with jars/bottles — quick set dressing. */
+export function shelf(pen, x, y, w, { salt = 'shelf', items = 5 } = {}) {
+  pen.begin(salt);
+  pen.line(x, y, x + w, y, { w: 1.4 });
+  pen.hatch(x, y, w, 4, { gap: 2, w: 0.5 });
+  for (let i = 0; i < items; i++) {
+    const bx = x + 6 + (i * (w - 12)) / Math.max(1, items - 1);
+    const bh = 10 + ((i * 7) % 9);
+    pen.fillRect(bx - 4, y - bh, 8, bh, PAPER_LIGHT, 0.7);
+    pen.rect(bx - 4, y - bh, 8, bh, { w: 0.8 });
+    pen.line(bx - 2, y - bh, bx - 2, y - bh - 3, { w: 0.8 });
   }
 }

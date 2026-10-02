@@ -24,6 +24,7 @@ import { InventoryPanel } from './ui/inventoryPanel.js';
 import { JournalPanel } from './ui/journalPanel.js';
 import { MainMenu, PauseMenu, SettingsPanel, ConfirmDialog } from './ui/menus.js';
 import { TitleCard, EndScreen } from './ui/screens.js';
+import { ChoiceDialog } from './ui/choice.js';
 import { CONTENT } from './content/index.js';
 
 const NOPE = ['That doesn’t do anything.', 'I can’t see how that helps here.', 'No. Think.', 'Not here.'];
@@ -199,17 +200,18 @@ export class Game {
     if (st.playTime < f.flickerUntil && !this.settings.get('reduceFlicker')) f.power = vnoise(st.playTime * 30) > 0.45 ? 1 : 0.15;
     else f.power = 1;
 
-    // Carbon-monoxide haze drifts toward what the room "breathes".
-    const hazeTarget = this.room.hazeTarget ? this.room.hazeTarget(st) : 0.2;
+    // Carbon-monoxide haze drifts toward what the room "breathes" (far less once the boiler is off).
+    const hazeTarget = (this.room.hazeTarget ? this.room.hazeTarget(st) : 0.2) * (st.flags.boilerOff ? 0.15 : 1);
     st.haze = damp(st.haze, hazeTarget, 0.04, dt);
 
-    // The low-battery chirp of an alarm somewhere below. Never explained here.
-    if (st.playTime > this.nextChirp) {
+    // The low-battery chirp of an alarm somewhere below, until someone fixes it.
+    if (!st.flags.alarmFixed && st.playTime > this.nextChirp) {
       this.nextChirp = st.playTime + 38 + Math.random() * 10;
       this.audio.play('chirp', { volume: 0.35, pan: Math.random() * 1.2 - 0.6 });
     }
 
     this.room.onUpdate?.(this, dt);
+    this.updateMeter();
 
     // Queued ambient moments (a thought, a reaction) play as soon as the player is free.
     if (this.ambientQueue.length && !this.busy && !this.ui.blocking()) this.runScript(this.ambientQueue.shift());
@@ -217,6 +219,19 @@ export class Game {
     // Camera eases after the player with a little look-ahead.
     const target = clamp(this.player.x - VIEW_W / 2 + this.player.facing * 40, 0, Math.max(0, this.room.width - VIEW_W));
     this.camX = damp(this.camX, target, 3.2, dt);
+  }
+
+  /** The CO alarm's readout, shown whenever she carries it. Rooms report their level by x. */
+  updateMeter() {
+    if (!this.has('co_alarm')) {
+      this.hud.setMeter(null);
+      return;
+    }
+    const st = this.state;
+    let ppm = this.room.coLevel ? this.room.coLevel(this.player.x, st) : 20;
+    if (st.flags.boilerOff) ppm = Math.min(ppm, 15);
+    ppm = Math.round(ppm + Math.sin(this.time * 1.7) * 2);
+    this.hud.setMeter(`CO ${Math.max(0, ppm)} ppm`, ppm >= 100);
   }
 
   draw() {
@@ -250,7 +265,7 @@ export class Game {
   }
 
   autosave() {
-    if (this.mode !== 'play') return;
+    if (this.mode !== 'play' || this.room.noSave) return;
     if (this.busy || this.ui.stack.some((m) => m instanceof DialogueBox)) {
       // Never save half-way through a scripted moment; try again shortly.
       clearTimeout(this.saveTimer);
@@ -261,7 +276,7 @@ export class Game {
   }
 
   autosaveNow() {
-    if (this.mode === 'play' && !this.busy) saveGame(this.state);
+    if (this.mode === 'play' && !this.busy && !this.room.noSave) saveGame(this.state);
   }
 
   // ------------------------------------------------------------------ flow
@@ -303,7 +318,20 @@ export class Game {
     this.state = createInitialState();
     this.story.unread.clear();
     await this.enterPlay();
-    await this.runScript(() => CONTENT.chapters[1].begin(this), { force: true });
+    await this.runScript(() => this.startChapter(1), { force: true });
+  }
+
+  /**
+   * Begin chapter n. A checkpoint of the state is kept so "Restart chapter" can return
+   * here without losing what earlier chapters gave the player.
+   */
+  async startChapter(n) {
+    const chapter = CONTENT.chapters[n];
+    if (!chapter) throw new Error(`No chapter ${n}`);
+    this.state.chapter = n;
+    this.state.checkpoint = JSON.stringify({ ...this.state, checkpoint: null });
+    saveGame(this.state);
+    await chapter.begin(this);
   }
 
   async continueGame() {
@@ -362,8 +390,9 @@ export class Game {
     this.loadRoom(id, x, facing);
     this.camX = clamp(this.player.x - VIEW_W / 2, 0, Math.max(0, this.room.width - VIEW_W));
     await this.ui.fade(false, 420);
-    saveGame(this.state);
+    if (!this.room.noSave) saveGame(this.state);
     await this.room.onEnter?.(this, from);
+    await CONTENT.chapters[this.state.chapter]?.onRoomEnter?.(this, id, from);
   }
 
   // ------------------------------------------------------------------ hotspots
@@ -406,6 +435,12 @@ export class Game {
     await CONTENT.chapters[this.state.chapter]?.end?.(this);
   }
 
+  /** Let the current chapter decide what a shared object does. Resolves false if it has no say. */
+  async chapterHook(name, ...args) {
+    const hook = CONTENT.chapters[this.state.chapter]?.hooks?.[name];
+    return hook ? hook(this, ...args) : false;
+  }
+
   // ------------------------------------------------------------------ panels
 
   openPause() {
@@ -416,7 +451,7 @@ export class Game {
       canLoad,
       onJournal: () => this.openJournal(),
       onInventory: () => this.openInventory(),
-      onSave: () => (this.busy ? false : saveGame(this.state)),
+      onSave: () => (this.busy || this.room.noSave ? false : saveGame(this.state)),
       onLoad: async () => {
         const ok = await this.ui.open(new ConfirmDialog(this.ui, { title: 'Load last save?', text: 'Anything since your last save will be lost.', yes: 'Load' }));
         if (ok) this.continueGame();
@@ -441,11 +476,16 @@ export class Game {
 
   async restartChapter() {
     const chapter = this.state.chapter;
+    let restored = null;
+    try {
+      restored = this.state.checkpoint ? JSON.parse(this.state.checkpoint) : null;
+    } catch {
+      restored = null;
+    }
     this.ui.closeAll();
-    this.state = createInitialState();
-    this.state.chapter = chapter;
+    this.state = restored ? { ...createInitialState(), ...restored } : createInitialState();
     await this.enterPlay();
-    await this.runScript(() => CONTENT.chapters[chapter].begin(this), { force: true });
+    await this.runScript(() => this.startChapter(restored ? chapter : 1), { force: true });
   }
 
   openSettings() {
@@ -599,12 +639,17 @@ export class Game {
     });
   }
 
+  /** Ask the player to choose. Resolves with the chosen option's value. */
+  choose(opts) {
+    return this.ui.open(new ChoiceDialog(this.ui, opts));
+  }
+
   titleCard(opts) {
     return this.ui.open(new TitleCard(this.ui, opts));
   }
 
   endScreen(opts) {
-    return this.ui.open(new EndScreen(this.ui, opts));
+    return this.ui.open(new EndScreen(this.ui, { boil: this.boil, ...opts }));
   }
 
   async gameOver({ title, paragraphs }) {
@@ -625,6 +670,7 @@ export class Game {
   }
 
   saveNow() {
+    if (this.room.noSave) return false;
     return saveGame(this.state);
   }
 

@@ -205,11 +205,15 @@ export class Renderer {
     sh.setTransform(1, 0, 0, 1, 0, 0);
     sh.globalAlpha = 1;
     sh.globalCompositeOperation = 'copy';
-    sh.fillStyle = `rgba(24,17,15,${room.darkness ?? 0.8})`;
+    const darkness = room.darkness ?? 0.8;
+    sh.fillStyle = `rgba(24,17,15,${darkness})`;
     sh.fillRect(0, 0, W, H);
     sh.globalCompositeOperation = 'source-over';
+    // Hatching is as heavy as the room is dark: dense at night, faint at dawn.
     this.updateHatchPattern(f);
+    sh.globalAlpha = Math.min(1, darkness * 1.1);
     sh.drawImage(this.hatchPattern, 0, 0);
+    sh.globalAlpha = 1;
 
     sh.setTransform(s, 0, 0, s, ox, oy);
     sh.globalCompositeOperation = 'destination-out';

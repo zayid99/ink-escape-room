@@ -448,4 +448,53 @@ const SYNTHS = {
   heartbeat(dest, t) {
     for (const dt of [0, 0.28]) this.tone(dest, t + dt, { freq: 52, dur: 0.22, peak: 0.45, glide: -12 });
   },
+  /** A clock striking: opts.count bongs. */
+  chime(dest, t, opts) {
+    const n = opts.count || 1;
+    for (let i = 0; i < n; i++) {
+      const at = t + i * 1.4;
+      for (const [mult, peak] of [[1, 0.12], [2.76, 0.04], [5.4, 0.02]]) this.tone(dest, at, { freq: 196 * mult, dur: 2.6, peak, attack: 0.004 });
+    }
+  },
+  /** CO alarm: four sharp beeps. */
+  alarm(dest, t) {
+    for (let i = 0; i < 4; i++) this.tone(dest, t + i * 0.22, { freq: 3150, type: 'square', dur: 0.12, peak: 0.06, attack: 0.003 });
+  },
+  /** Old cassette: hiss and a wavering low hum under the "voice". */
+  tape(dest, t, opts) {
+    const dur = opts.dur || 3;
+    this.noiseBurst(dest, t, { dur, type: 'highpass', freq: 3500, peak: 0.05, attack: 0.1 });
+    const c = this.ctx;
+    const o = c.createOscillator();
+    o.type = 'triangle';
+    o.frequency.value = 140;
+    const lfo = c.createOscillator();
+    lfo.frequency.value = 5.5;
+    const lg = c.createGain();
+    lg.gain.value = 30;
+    lfo.connect(lg).connect(o.frequency);
+    const bp = c.createBiquadFilter();
+    bp.type = 'bandpass';
+    bp.frequency.value = 600;
+    bp.Q.value = 2;
+    const g = c.createGain();
+    this.env(g, t, 0.2, 0.05, dur);
+    o.connect(bp).connect(g).connect(dest);
+    o.start(t);
+    lfo.start(t);
+    o.stop(t + dur + 0.3);
+    lfo.stop(t + dur + 0.3);
+  },
+  tick(dest, t) {
+    for (let i = 0; i < 4; i++) this.noiseBurst(dest, t + i * 0.5, { dur: 0.02, type: 'highpass', freq: 3000, peak: i % 2 ? 0.12 : 0.18 });
+  },
+  waves(dest, t) {
+    const n = this.noiseBurst(dest, t, { dur: 3.2, freq: 300, q: 0.4, peak: 0.35, attack: 1.2, brown: true });
+    n.f.frequency.linearRampToValueAtTime(900, t + 1.4);
+    n.f.frequency.linearRampToValueAtTime(250, t + 3.2);
+  },
+  gas(dest, t) {
+    this.noiseBurst(dest, t, { dur: 0.9, type: 'highpass', freq: 2500, peak: 0.15, attack: 0.02 });
+    this.noiseBurst(dest, t + 0.8, { dur: 0.3, freq: 150, peak: 0.25, brown: true });
+  },
 };

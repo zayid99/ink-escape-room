@@ -147,58 +147,90 @@ connects to earlier clues → builds to the final revelation.
   day? And if she is the one writing to herself as "Maren"… why did one note start
   with a W?
 
-### Chapter 2 — *Lark Time* (Ground floor: Hall, Clock Workshop, Kitchen)
+### Chapter 2 — *Lark Time* (Ground floor: Kitchen, Hall, Workshop) — **playable**
 
-* **New information:** Abel Rook is real; his boots, his lantern, his warm tea on
-  the stove. Wren's phone (dead) shows calls to Abel. The kitchen's battery radio
-  plays a recorded message Abel left on the answerphone. Father's workshop is full
-  of clocks all stopped at 3:17. The tall man appears in the hall mirror.
-* **Objective:** Find out who A.R. is and what he did to Wren.
-* **Puzzles:** a gear-train puzzle to restart the workshop regulator clock (which
-  then chimes the true hour and opens Father's locked cabinet); the answerphone
-  tape must be spliced and played at the right speed (an audio clue revealing
-  Abel's number and his words "she won't let me take her off the island"); the
-  kitchen's boot-print trail leads to the boathouse key.
-* **Reveal (Twist 2):** At the moment the tall man stands behind the player in the
-  hall mirror, Abel's lantern is visible far out on the causeway through the
-  window — two different presences. Clara's 2004 diary, found in the workshop
-  cabinet, describes the same tall man "only when the radiators knock" and the
-  canaries dying. Abel is not the threat. **The house is poisoning her — carbon
-  monoxide from the boiler — exactly as it poisoned her family in 2004. And the
-  radiators are hot because she relit it.**
-* **Uncertainty:** Abel's notes say *you* walked into the water. *You*. The notes
-  are all to "Wren". Has Abel mistaken her for her sister — or has he never known
-  there were two of them?
+* **New information:** Somebody was in the kitchen tonight — a warm kettle, a
+  stranger's tea (milk, two sugars), wet boot prints from the bolted back door.
+  Wren's dead phone with a pencilled note: "Charged it for you. Ring me. — A."
+  Father's calendar, still on March: "14 — W's birthday — 31!". The kitchen clock
+  is the only clock still running (Lark time, in real time). Father's workshop:
+  a wall of clocks at 3:17 and the regulator — the house's one honest clock.
+* **Objective:** Find out who A.R. is.
+* **Puzzles:**
+  1. **The Tape** — the answerphone cassette has been snapped. Mend it with sticky
+     tape from the dresser (item combination) and play it: Abel Rook on the phone
+     to a doctor ("Edmund's girl… she keeps saying she has to find Wren"; "I saw
+     the glow at twenty-five past two by my watch" in 2004; "I've hidden
+     Edmund's keys in the bread crock") and a message to Wren ("the front-door
+     code is your birthday"). The bread crock is only worth searching once the
+     tape has been heard.
+  2. **The True Clock** — the regulator has lost its pendulum (it is propping the
+     hall cupboard open). Hang it, then set the regulator to the **true** time.
+     The kitchen clock runs in real time on Lark time, so the answer changes as
+     you play: read the kitchen clock and subtract forty minutes. Entering the
+     kitchen clock's reading is answered in red: "Lark time. It wants the TRUTH."
+     It strikes, and Father's cabinet (latched to the strike) opens: Mother's
+     2004 diary and her keys.
+  3. **The Mirror and the Window** — after the diary the radiators knock, and the
+     tall man stands in the hall mirror whenever she turns her back on it. Catch
+     him with the torch and he is gone. To understand him she must look *out of
+     the window* while he is in the glass: Abel's lantern is far out on the
+     causeway.
+* **Reveal (Twist 2):** Two presences at once. **The tall man is not Abel. The
+  house is poisoning her — carbon monoxide from the boiler — as it poisoned her
+  family in 2004. And she relit it: "It's freezing — I got the boiler going,"
+  Night 1, her handwriting.** Abel has been opening the windows.
+* **Uncertainty:** Abel's notes are all to "Wren". Has he mistaken her for her
+  sister — or has he never known there were two of them?
 
-### Chapter 3 — *Exposure* (Darkroom, Greenhouse, Cellar)
+### Chapter 3 — *Exposure* (Glasshouse, Darkroom, Cellar) — **playable**
 
-* **New information:** Clara's darkroom still holds a roll of undeveloped film
-  from February 2004. The greenhouse holds the canary cage and the CO alarm's
-  chirping (the sound heard since Chapter 1). The cellar holds the boiler, its
-  pilot burning blue.
-* **Objective:** Shut the boiler down and find out what really happened on
-  14 February 2004.
-* **Puzzles:** develop the film (a timed chemical-sequence puzzle using Clara's
-  darkroom notes); restore the CO alarm (battery from the study drawer in
-  Chapter 1) and use its readings to find the leak; shut the boiler down by the
-  sequence on Father's capped-off valve tag.
-* **Reveal (Twist 3):** The developed photographs show the morning before the
-  fire: Clara, Edmund, and **one** girl holding a sketchbook — the one in every
-  drawing — and a smaller girl with a red pen. In Father's locked drawer: the
-  inquest report. **Maren Lark, aged 13, died in the fire.** The fire began in the
-  cellar, not the nursery.
+* **New information:** The chirp heard since Chapter 1 is a carbon-monoxide alarm
+  Abel cable-tied to the boiler pipe in Clara's glasshouse ("A.R. — keep this
+  ON"), its battery dying. Clara's canaries are still in their cage. Her
+  darkroom holds an undeveloped roll: "FEB 04 — girls". The cellar is chained,
+  chalked NEVER.
+* **Objective:** Find the leak; shut the boiler down.
+* **Puzzles:**
+  1. **The Alarm** — the battery from the attic desk drawer (Chapter 1, wrapped in
+     "SHUT UP SHUT UP SHUT UP") brings it back: 190 ppm. Carried, it shows a live
+     reading that rises toward the source — a hot/cold search.
+  2. **Exposure** — develop the film. Safelight on, **torch off** (white light
+     ruins it), then pour four unlabelled-by-step bottles in Clara's order
+     (developer in brown glass → stop "the vinegar one" → fix "hypo" → wash).
+     Her light-tight paper safe, opened in the dark, holds the cellar key.
+  3. **Shutting Her Down** — in the cellar (bad air: open the coal chute or be
+     driven back upstairs), follow the alarm to the cracked flue joint, then shut
+     the boiler down in the order on Father's brass tag: gas, check the pilot,
+     pump, air. Wrong orders blow back or make the pipes bang.
+* **Reveal (Twist 3):** The photographs: "M. (13) & W. (9) — Wren 'correcting' as
+  usual." Behind the cold boiler, in a tobacco tin marked "Where it happened. Not
+  for Wren. Not yet.": the inquest. **Maren Elizabeth Lark, aged 13, died in the
+  fire.** It began at the boiler flue at 2:20 a.m.; the candle "played no part".
 * **Uncertainty:** "Then who am I?"
 
-### Chapter 4 — *Low Water* (The Burned Back Stair, Nursery, Causeway)
+### Chapter 4 — *Low Water* (Back Stair, Nursery, Hall, Causeway) — **playable**
 
-* **New information:** Abel's final note and his account. The journal's own early
-  pages, signed "M.L., age 13", with a red-pen correction from "W., age 9".
-* **Objective:** Leave the island alive. Get across the causeway at low water.
-* **Puzzles:** reconstruct the fire's route using the inquest timeline and the
-  stopped clocks (three clocks stopped at different minutes as the fire passed);
-  read the tide table in **true** time — clocks show Lark time, so a player who
-  leaves at the clock's "low water" walks into the rising tide (game over); choose
-  the name to sign on the last page.
+* **New information:** Dawn; the house clocks say 6:00. The back stair, walked
+  properly for the first time: burned black, Father's "M." and a cross on the
+  bottom step, a clock fallen by the cellar door (3:02) and one on the
+  half-landing (3:09). The journal's first page: "MAREN LARK — age 13" and, in a
+  nine-year-old's red fist, "W. LARK, age 9 — you drew my bed wrong".
+* **Objective:** Leave the island alive.
+* **Puzzles:**
+  1. **The Night of the Fire** — put five events in order by **true** time: flue
+     catches (2:20, inquest) → cellar-door clock (3:02 Lark = 2:22) → Abel runs
+     (2:25, his own watch, from the tape) → half-landing clock (3:09 = 2:29) →
+     the curtain catches as the longcase stops (3:17 = 2:37). The candle fell
+     last.
+  2. **The Last Page** — sign the journal. *Wren* needs enough evidence (four of:
+     red pen, headboard, height marks, calendar, photographs, inquest, fire
+     route, Abel's note); *Maren* is always possible (loop ending).
+  3. **Low Water** — the front door (Abel's padlock: her birthday, 1403). The
+     choice offers "Set out now" or "Wait ten minutes", showing the **house**
+     time. The tide table says 7:49, safe ±2 hours, in **true** time. At 6:00
+     by the house it is really 5:20 — 29 minutes too early. Every window in the
+     house shows the causeway emerging by true time, as an honest hint.
 * **Final revelation:** see §6.
 
 ---
@@ -303,15 +335,18 @@ true meaning.
 | 22 | Dollhouse miniature: wardrobe slid aside showing a painted door | Nursery (1) | The girls' secret. | The back stair — the fire's chimney, and the route Maren took back in. |
 | 23 | Tally marks IIII + "Maren — check your coat pocket" | Hatch (1) | — | Twist 1: four nights. |
 | 24 | Red pen with chewed cap: "Wren chews her pens. I don't." | Coat pocket (1) | Denial. | She does. She's Wren. |
-| 25 | Low-battery chirp every ~40 s | Audio, everywhere (1–3) | An insect / something ticking in the walls. | The greenhouse CO alarm (Ch 3). |
-| 26 | Wet boot prints and warm tea | Kitchen (2) | An intruder lives here. | Abel's daily visits. |
-| 27 | Answerphone tape: "She won't let me take her off the island. She keeps saying she has to find Wren." | Kitchen radio (2) | Abel is holding Wren somewhere. | Abel describing the protagonist, who is searching for herself. |
-| 28 | Tall man in the hall mirror while Abel's lantern is on the causeway | Hall (2) | Abel is the tall man. | Two different things: one man, one poison (Twist 2). |
-| 29 | Clara's 2004 diary: canaries dead, headaches, the tall man | Workshop cabinet (2) | The house has always been haunted. | CO in 2004. |
-| 30 | Undeveloped film, Feb 2004 | Darkroom (3) | Evidence of the tall man? | Last photos of Maren; the smaller girl with the red pen. |
-| 31 | Inquest report | Father's locked drawer (3) | — | Twist 3; fire origin = boiler; candle "played no part". |
-| 32 | Three clocks stopped at three minutes along the fire's path | Back stair (4) | Ghosts stopping clocks. | Heat stopping them — a timeline of the fire. |
-| 33 | Journal's first page: "M.L., age 13" with a red "W., age 9 — you drew my bed wrong" | Journal (4) | — | The sketchbook was Maren's; Wren saved it. |
+| 25 | Low-battery chirp every ~40 s | Audio, everywhere (1–2) | An insect / something ticking in the walls. | Abel's CO alarm in the glasshouse, battery dying (Ch 3). Stops once fixed. |
+| 26 | Warm kettle, a stranger's tea, wet boot prints | Kitchen (2) | An intruder lives here. | Abel's visits at each low water. |
+| 27 | Answerphone: "Edmund's girl… she keeps saying she has to find Wren" | Kitchen (2) | Abel is holding Wren somewhere. | Abel describing the protagonist, who is searching for herself. |
+| 28 | Father's calendar: "14 — W's birthday — 31!" | Kitchen (2) | Wren's birthday (the padlock code). | Wren is 31 — the age of the woman reading the calendar. |
+| 29 | Kitchen clock running on Lark time | Kitchen (2) | Somebody winds it. | The regulator puzzle; later, the clock that would drown her (Ch 4). |
+| 30 | Tall man in the hall mirror while Abel's lantern is on the causeway | Hall (2) | Abel is the tall man. | Two different things: one man, one poison (Twist 2). |
+| 31 | Clara's 2004 diary: canaries, headaches, the tall man "only when the radiators knock" | Workshop cabinet (2) | The house has always been haunted. | CO in 2004. |
+| 32 | Canaries still in the cage | Glasshouse (3) | Neglect. | The first casualties of the leak — miners' canaries. |
+| 33 | Clara's undeveloped film, Feb 2004 | Darkroom (3) | Evidence of the tall man? | The last photos of Maren — and of Wren with her red pen. |
+| 34 | Inquest report in a tobacco tin behind the boiler | Cellar (3) | — | Twist 3; fire origin = boiler; candle "played no part". |
+| 35 | Stair clocks stopped at 3:02 and 3:09; "M." on the bottom step | Back stair (4) | Ghosts stopping clocks. | Heat stopping them as it climbed — a timeline of the fire. |
+| 36 | Journal's first page: "MAREN LARK — age 13" with a red "W. LARK, age 9 — you drew my bed wrong" | Journal (4) | — | The sketchbook was Maren's; Wren saved it. |
 
 ### Red herrings (deliberate)
 

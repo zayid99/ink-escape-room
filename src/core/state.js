@@ -21,6 +21,8 @@ export function createInitialState() {
     haze: 0.12,
     playTime: 0,
     savedAt: 0,
+    /** JSON snapshot taken when the current chapter began (for "Restart chapter"). */
+    checkpoint: null,
   };
 }
 
@@ -47,6 +49,7 @@ export function normaliseState(raw, knownRooms) {
   s.annotations = raw.annotations && typeof raw.annotations === 'object' ? raw.annotations : {};
   s.haze = Number.isFinite(raw.haze) ? raw.haze : base.haze;
   s.playTime = Number.isFinite(raw.playTime) ? raw.playTime : 0;
+  s.checkpoint = typeof raw.checkpoint === 'string' ? raw.checkpoint : null;
   if (!knownRooms.includes(s.room)) return null;
   return s;
 }
