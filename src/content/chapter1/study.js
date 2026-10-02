@@ -4,7 +4,7 @@
 
 import { INK, RED, PAPER_LIGHT, FONT_TYPE } from '../../render/ink.js';
 import { vnoise } from '../../core/math.js';
-import { FLOOR, floorboards, wallpaper, skirting, windowFrame, windowNight, doorClosed, doorOpen, clockFace, flame } from './draw.js';
+import { FLOOR, floorboards, wallpaper, skirting, windowFrame, windowNight, doorClosed, doorOpen, clockFace, flame } from '../draw.js';
 
 const W = 760;
 const WIN = { x: 236, y: 76, w: 80, h: 110 };

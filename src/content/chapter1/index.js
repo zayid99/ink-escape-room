@@ -76,20 +76,21 @@ export const chapter1 = {
       paragraphs: [
         'The back stair goes down into the dark, and the dark smells of the sea.',
         'Someone has been writing to her in red for four nights. Someone has been locking her in. Someone has been opening the window.',
-        '[[Chapter Two — “Lark Time” — is still being drawn.]]',
       ],
       stats: [
         ['Clues noted', `${found} of ${CHAPTER1_CLUES.length}`],
         ['Time on the island', g.stats().time],
       ],
       buttons: [
-        { label: 'Return to the menu', value: 'menu', primary: true },
+        { label: 'Go down — Chapter Two', value: 'next', primary: true },
+        { label: 'Return to the menu', value: 'menu' },
         { label: 'Stay in the nursery', value: 'stay' },
       ],
     });
     await g.ui.fade(false, 600);
     const choice = await screen;
-    if (choice === 'menu') {
+    if (choice === 'next') await g.startChapter(2);
+    else if (choice === 'menu') {
       await g.ui.fade(true, 300);
       g.showMainMenu();
       await g.ui.fade(false, 400);

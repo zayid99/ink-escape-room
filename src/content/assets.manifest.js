@@ -13,6 +13,14 @@ export const ART = {
   'room.study': null,
   'room.landing': null,
   'room.nursery': null,
+  'room.kitchen': null,
+  'room.hall': null,
+  'room.workshop': null,
+  'room.greenhouse': null,
+  'room.darkroom': null,
+  'room.cellar': null,
+  'room.backstair': null,
+  'room.causeway': null,
   // Player sprite sheet support is intentionally not wired: the player is a
   // procedural rig. Replace drawPlayer() in src/world/player.js to use sprites.
 };
@@ -45,4 +53,10 @@ export const AUDIO = {
   'sfx.musicbox': null,
   'sfx.window': null,
   'sfx.heartbeat': null,
+  'sfx.chime': null,
+  'sfx.alarm': null,
+  'sfx.tape': null,
+  'sfx.tick': null,
+  'sfx.waves': null,
+  'sfx.gas': null,
 };

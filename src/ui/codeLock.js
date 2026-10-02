@@ -38,11 +38,11 @@ export class CodeLock extends Modal {
     for (const note of o.redNotes || []) this.redEl.append(el('p', { class: 'red-pen scrawl shown' }, [inline(note)]));
 
     const tag = el('div', { class: 'lock-tag' }, [el('p', {}, [inline(o.tag || '')])]);
-    this.body = el('div', { class: 'lock-body' }, [
+    this.body = el('div', { class: `lock-body${o.variant ? ` ${o.variant}` : ''}` }, [
       el('div', { class: 'lock-shackle' }),
       el('div', { class: 'lock-case' }, [el('p', { class: 'lock-brand', text: o.brand || 'E. LARK · GANNET' }), wheelRow]),
     ]);
-    const tryBtn = el('button', { class: 'ink-btn', text: 'Try the lock', onclick: () => this.submit() });
+    const tryBtn = el('button', { class: 'ink-btn', text: o.tryLabel || 'Try the lock', onclick: () => this.submit() });
     const leaveBtn = el('button', { class: 'ink-btn ghost', text: 'Step back', onclick: () => this.close(false) });
     this.el.append(
       el('div', { class: 'lock-wrap' }, [

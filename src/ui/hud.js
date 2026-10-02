@@ -10,7 +10,8 @@ export class HUD {
     const btn = (label, title, fn) => el('button', { class: 'hud-btn', 'aria-label': title, title, text: label, onclick: (e) => blurThen(e, fn) });
     this.buttons = el('div', { class: 'hud-buttons' }, [btn('Journal', 'Journal (J)', onJournal), btn('Pockets', 'Pockets (I)', onInventory), btn('❚❚', 'Pause (Esc)', onPause)]);
     this.hintEl = el('div', { class: 'hud-hint' });
-    this.root = el('div', { class: 'hud', hidden: true }, [this.objectiveEl, this.buttons, this.heldEl, this.hintEl]);
+    this.meterEl = el('div', { class: 'hud-meter', hidden: true, 'aria-live': 'off' });
+    this.root = el('div', { class: 'hud', hidden: true }, [this.objectiveEl, this.buttons, this.heldEl, this.hintEl, this.meterEl]);
     layer.append(this.root);
     this.objectiveTimer = null;
   }
@@ -33,6 +34,16 @@ export class HUD {
   setHeld(item) {
     this.heldEl.hidden = !item;
     if (item) this.heldEl.textContent = `Holding: ${item.name}  ✕`;
+  }
+
+  /** A small instrument readout (the CO alarm). Pass null to hide it. */
+  setMeter(text, alarm = false) {
+    if (text === this.meterText && alarm === this.meterAlarm) return;
+    this.meterText = text;
+    this.meterAlarm = alarm;
+    this.meterEl.hidden = text === null;
+    if (text !== null) this.meterEl.textContent = text;
+    this.meterEl.classList.toggle('alarm', alarm);
   }
 
   hint(text, ms = 7000) {

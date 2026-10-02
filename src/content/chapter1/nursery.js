@@ -5,7 +5,7 @@
 
 import { RED, PAPER_LIGHT, FONT_TYPE } from '../../render/ink.js';
 import { easeInOut, clamp01 } from '../../core/math.js';
-import { FLOOR, floorboards, wallpaper, skirting, windowFrame, windowNight, doorOpen } from './draw.js';
+import { FLOOR, floorboards, wallpaper, skirting, windowFrame, windowNight, doorOpen } from '../draw.js';
 
 const W = 820;
 const WIN = { x: 470, y: 84, w: 80, h: 92 };
@@ -341,6 +341,13 @@ export const nursery = {
       h: HATCH.h,
       enabled: (st) => !!st.flags.wardrobeMoved,
       async onInteract(g) {
+        if (g.state.chapter > 1) {
+          // Later chapters: the back stair is simply the way down to the kitchen
+          // (in Chapter 4 she walks it properly, step by step).
+          if (g.state.chapter === 4) await g.goTo('backstair', { x: 700, facing: -1 });
+          else await g.goTo('kitchen', { x: 64, facing: 1 });
+          return;
+        }
         if (g.flag('ch1Twist')) {
           await g.chapterEnd();
           return;
