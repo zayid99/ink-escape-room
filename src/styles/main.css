@@ -227,6 +227,12 @@ button {
   transform: rotate(-1deg);
 }
 
+.hud-btn.off {
+  text-decoration: line-through;
+  text-decoration-color: var(--red);
+  text-decoration-thickness: 2px;
+}
+
 .hud-held {
   position: absolute;
   left: 2%;

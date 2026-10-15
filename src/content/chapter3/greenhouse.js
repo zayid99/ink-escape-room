@@ -8,6 +8,25 @@ import { FLOOR, floorboards, windowSea, doorOpen } from '../draw.js';
 const W = 820;
 const ALARM = { x: 560, y: 196 };
 
+/** Fit the square battery: the alarm wakes up and comes with you. */
+async function fitBattery(g) {
+  g.take('battery');
+  g.setFlag('alarmFixed');
+  g.sfx('click');
+  await g.wait(400);
+  g.sfx('alarm');
+  g.flash = 0.25;
+  await g.wait(600);
+  g.sfx('alarm');
+  g.audio.pulseTension(0.9, 3500);
+  await g.say('The battery from the study drawer. SHUT UP SHUT UP SHUT UP.', 'It shrieks.', 'CO — 190 ppm.', 'Carbon monoxide. In here, on the pipe from the cellar.');
+  g.give('co_alarm');
+  g.addClue('co_reading');
+  g.hud.hint('While you carry the CO alarm its reading shows in the corner. Follow it to the source.', 7000);
+  await g.say('I cut it off the pipe and take it with me. It’ll tell me where it’s worst.');
+  g.objective('Get into the cellar — the key must be somewhere Mother kept things. Her darkroom?');
+}
+
 export const greenhouse = {
   id: 'greenhouse',
   title: 'The glasshouse',
@@ -179,27 +198,17 @@ export const greenhouse = {
         await g.say('There. The chirp I’ve heard all night.', 'A carbon-monoxide alarm, cable-tied to the pipe. The light blinks: low battery.');
         await g.read('alarm_label');
         g.addClue('abels_alarm');
-        await g.say('Abel put it here. On the pipe from the boiler.', 'If I had a battery — the square kind…');
-        if (!g.has('battery')) await g.say('Father kept odds and ends in the attic desk drawer. The back stair goes up to the nursery, and the landing.');
-        g.objective('Get the alarm working.');
+        if (g.has('battery')) {
+          await g.say('Abel put it here. On the pipe from the boiler.');
+          await fitBattery(g);
+          return;
+        }
+        await g.say('Abel put it here. On the pipe from the boiler.', 'If I had a battery — the square kind…', 'Father kept odds and ends in the attic desk drawer. The back stair goes up to the nursery, and the landing.');
+        g.objective('Get the alarm working: a square battery — the attic desk drawer (kitchen → back stair → nursery → landing).');
       },
       async onUse(g, item) {
         if (item !== 'battery') return false;
-        g.take('battery');
-        g.setFlag('alarmFixed');
-        g.sfx('click');
-        await g.wait(400);
-        g.sfx('alarm');
-        g.flash = 0.25;
-        await g.wait(600);
-        g.sfx('alarm');
-        g.audio.pulseTension(0.9, 3500);
-        await g.say('The battery from the study drawer. SHUT UP SHUT UP SHUT UP.', 'It shrieks.', 'CO — 190 ppm.', 'Carbon monoxide. In here, on the pipe from the cellar.');
-        g.give('co_alarm');
-        g.addClue('co_reading');
-        g.hud.hint('While you carry the CO alarm its reading shows in the corner. Follow it to the source.', 7000);
-        await g.say('I cut it off the pipe and take it with me. It’ll tell me where it’s worst.');
-        g.objective('Get into the cellar — the key must be somewhere Mother kept things. Her darkroom?');
+        await fitBattery(g);
         return true;
       },
     },

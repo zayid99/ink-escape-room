@@ -54,7 +54,7 @@ const PATCHES = [
     // The opening controls hint, in a touch version for phones and tablets.
     file: /src\/content\/chapter1\/index\.js$/,
     find: "g.hud.hint('A / D or ← → to walk · E to interact · mouse aims the torch · I pockets · J journal · Esc pause', 9000);",
-    replace: "g.hud.hint(g.touchMode ? 'Tap to walk · tap things to use them · Journal, Pockets and pause are top right' : 'A / D or ← → to walk · E to interact · mouse aims the torch · I pockets · J journal · Esc pause', 9000);",
+    replace: "g.hud.hint(g.touchMode ? 'Tap to walk · tap things to use them · Journal, Pockets, Torch and pause are top right' : 'A / D or ← → to walk · E to interact · mouse aims the torch · I pockets · J journal · Esc pause', 9000);",
   },
 ];
 

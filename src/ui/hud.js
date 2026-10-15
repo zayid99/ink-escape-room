@@ -4,11 +4,13 @@
 import { el, inline } from './dom.js';
 
 export class HUD {
-  constructor(layer, { onJournal, onInventory, onPause, onPutAway }) {
+  constructor(layer, { onJournal, onInventory, onTorch, onPause, onPutAway }) {
     this.objectiveEl = el('div', { class: 'hud-objective', 'aria-live': 'polite' });
     this.heldEl = el('button', { class: 'hud-held', hidden: true, title: 'Put away (Q / right-click)', onclick: (e) => blurThen(e, onPutAway) });
     const btn = (label, title, fn) => el('button', { class: 'hud-btn', 'aria-label': title, title, text: label, onclick: (e) => blurThen(e, fn) });
-    this.buttons = el('div', { class: 'hud-buttons' }, [btn('Journal', 'Journal (J)', onJournal), btn('Pockets', 'Pockets (I)', onInventory), btn('❚❚', 'Pause (Esc)', onPause)]);
+    this.torchBtn = btn('Torch', 'Torch on / off (F)', onTorch);
+    this.torchBtn.setAttribute('aria-pressed', 'true');
+    this.buttons = el('div', { class: 'hud-buttons' }, [btn('Journal', 'Journal (J)', onJournal), btn('Pockets', 'Pockets (I)', onInventory), this.torchBtn, btn('❚❚', 'Pause (Esc)', onPause)]);
     this.hintEl = el('div', { class: 'hud-hint' });
     this.meterEl = el('div', { class: 'hud-meter', hidden: true, 'aria-live': 'off' });
     this.root = el('div', { class: 'hud', hidden: true }, [this.objectiveEl, this.buttons, this.heldEl, this.hintEl, this.meterEl]);
@@ -34,6 +36,14 @@ export class HUD {
   setHeld(item) {
     this.heldEl.hidden = !item;
     if (item) this.heldEl.textContent = `Holding: ${item.name}  ✕`;
+  }
+
+  /** Reflect the torch state on its button (pressed = on). */
+  setTorch(on) {
+    if (on === this.torchOn) return;
+    this.torchOn = on;
+    this.torchBtn.setAttribute('aria-pressed', String(on));
+    this.torchBtn.classList.toggle('off', !on);
   }
 
   /** A small instrument readout (the CO alarm). Pass null to hide it. */
