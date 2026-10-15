@@ -40,6 +40,7 @@ export class Game {
     this.hud = new HUD(this.ui.hudLayer, {
       onJournal: () => this.openJournal(),
       onInventory: () => this.openInventory(),
+      onTorch: () => this.onAction('flashlight'),
       onPause: () => this.openPause(),
       onPutAway: () => this.inventory.hold(null),
     });
@@ -199,6 +200,7 @@ export class Game {
     const f = this.flashlight;
     if (st.playTime < f.flickerUntil && !this.settings.get('reduceFlicker')) f.power = vnoise(st.playTime * 30) > 0.45 ? 1 : 0.15;
     else f.power = 1;
+    this.hud.setTorch(f.on);
 
     // Carbon-monoxide haze drifts toward what the room "breathes" (far less once the boiler is off).
     const hazeTarget = (this.room.hazeTarget ? this.room.hazeTarget(st) : 0.2) * (st.flags.boilerOff ? 0.15 : 1);

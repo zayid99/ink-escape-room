@@ -61,7 +61,7 @@ npm run dev       # http://localhost:5173 with hot reload
 | F | Torch on / off |
 | Esc or P | Pause |
 
-Touch: tap to walk or interact; the Journal / Pockets / Pause buttons sit in the top-right corner. Phones play best held sideways.
+Touch: tap to walk or interact; the Journal / Pockets / Torch / Pause buttons sit in the top-right corner. Phones play best held sideways.
 
 **Using items:** open Pockets, select an item, press **Hold**, then interact with something in the room. **Combine** two items from the same panel.
 
@@ -186,7 +186,7 @@ Take the snapped cassette from the answerphone, sticky tape from the dresser dra
 <details>
 <summary>Chapter 3</summary>
 
-Mother’s keys open the glasshouse (kitchen) and the darkroom (hall). Use the battery from the attic desk drawer on the alarm in the glasshouse. In the darkroom: pull the safelight, turn the torch off (**F**), then pour brown bottle → vinegar → hypo crystals → water. The paper safe (torch off) holds the cellar key. In the cellar, open the coal chute for air, find the cracked flue joint with the alarm, read the brass tag, then shut down: gas → check pilot → pump → air.
+Mother’s keys open the glasshouse (kitchen) and the darkroom (hall). Bring the battery from the attic desk drawer to the alarm in the glasshouse (it's fitted automatically). In the darkroom: pull the safelight, turn the torch off (**F**, or the **Torch** button), then pour brown bottle → vinegar → hypo crystals → water. The paper safe (torch off) holds the cellar key. In the cellar, open the coal chute for air, find the cracked flue joint with the alarm, read the brass tag, then shut down: gas → check pilot → pump → air.
 </details>
 
 <details>

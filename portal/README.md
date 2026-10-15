@@ -44,7 +44,7 @@ There are 2 files and no network requests besides those two. It runs from any fo
 - **Fullscreen button.** It is hidden in Settings when the iframe isn't allowed to go fullscreen (`document.fullscreenEnabled === false`), instead of doing nothing. Portals add their own fullscreen button.
 - **Menu focus.** Menu buttons use `data-autofocus` instead of the HTML `autofocus` attribute. Inside a cross-origin iframe (how portals embed games), Chrome blocks `autofocus` and logs a console error each time a menu opens. Focus is still moved to the same button by script, so keyboard play is unchanged.
 - **Keys no longer scroll the portal page.** Arrow keys, Space, Page Up/Down, Home and End would otherwise scroll the page around the iframe. Sliders and dropdowns keep their keys, buttons keep Space, and scrollable panels such as the journal still scroll.
-- **Touch mode from the start.** On touchscreens (`pointer: coarse`) the game starts in touch mode, so prompts say "Tap", and the opening controls hint reads "Tap to walk · tap things to use them · Journal, Pockets and pause are top right" instead of listing keyboard keys. The web build only switches after the first tap on the game scene.
+- **Touch mode from the start.** On touchscreens (`pointer: coarse`) the game starts in touch mode, so prompts say "Tap", and the opening controls hint reads "Tap to walk · tap things to use them · Journal, Pockets, Torch and pause are top right" instead of listing keyboard keys. The web build only switches after the first tap on the game scene.
 - **No pull-to-refresh, overscroll bounce or double-tap zoom on touch.** The page also blocks long-press text selection and callouts, except in form fields.
 
 **Already true of the game, kept as is**

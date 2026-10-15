@@ -10,7 +10,7 @@ const CONTROLS = [
   ['I or Tab', 'Pockets (inventory)'],
   ['J', 'Journal & clues'],
   ['Q · right-click', 'Put away held item'],
-  ['F', 'Torch on / off'],
+  ['F · Torch button', 'Torch on / off'],
   ['Esc or P', 'Pause'],
 ];
 

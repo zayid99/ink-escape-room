@@ -7,6 +7,8 @@ import { INK, RED, PAPER_LIGHT, FONT_TYPE } from '../../render/ink.js';
 import { FLOOR, floorboards, skirting, doorOpen, shelf } from '../draw.js';
 
 const W = 720;
+
+const torchOffHint = (g) => g.red(g.touchMode ? 'Torch off — the Torch button, top right.' : 'Torch off — F.');
 const LAMP = { x: 150, y: 60 };
 
 export const darkroom = {
@@ -160,7 +162,7 @@ export const darkroom = {
       enabled: (st) => !st.flags.filmDeveloped,
       async onInteract(g) {
         await g.say('A roll of film, still in its canister. Her label: “FEB 04 — girls — 24 exp.”', 'She never developed it. She left in 2005.');
-        g.objective('Develop Mother’s film: safelight on, torch OFF (F), then the trays.');
+        g.objective(g.touchMode ? 'Develop Mother’s film: safelight on, torch OFF (Torch button), then the trays.' : 'Develop Mother’s film: safelight on, torch OFF (F), then the trays.');
       },
     },
     {
@@ -182,7 +184,7 @@ export const darkroom = {
           return;
         }
         if (g.flashlight.on) {
-          await g.say('Not with the torch on. White light on open film and there’d be nothing left of it.', g.red('Torch off — F.'));
+          await g.say('Not with the torch on. White light on open film and there’d be nothing left of it.', torchOffHint(g));
           return;
         }
         await g.say('Four trays and four bottles. Brown glass, clear glass, a jar of crystals, a jug of water.', 'Her card is pinned above them.');
@@ -213,7 +215,7 @@ export const darkroom = {
       enabled: (st) => !st.flags.cellarKeyFound,
       async onInteract(g) {
         if (g.flashlight.on) {
-          await g.say('PAPER — NO LIGHT. Open it with the torch on and I’d spoil whatever’s inside.', g.red('Torch off — F.'));
+          await g.say('PAPER — NO LIGHT. Open it with the torch on and I’d spoil whatever’s inside.', torchOffHint(g));
           return;
         }
         g.setFlag('cellarKeyFound');
